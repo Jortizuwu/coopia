@@ -1,4 +1,5 @@
-import { Outlet } from 'react-router-dom'
+import NavbarComponent from './components/navbar'
+import Main from './components/main'
 
 /**
  * Renders the root layout of the application.
@@ -8,9 +9,10 @@ import { Outlet } from 'react-router-dom'
 
 function RootLayout() {
   return (
-    <>
-      <Outlet />
-    </>
+    <div className="flex min-h-screen w-full flex-col">
+      <NavbarComponent />
+      <Main navCollapsedSize={4} />
+    </div>
   )
 }
 
