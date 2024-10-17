@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Inbox } from 'lucide-react'
+import { Inbox, ChartAreaIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import {
@@ -60,10 +60,18 @@ function MainComponent({
           isCollapsed={isCollapsed}
           links={[
             {
-              title: 'Home',
+              title: 'Inicio',
               label: '',
               icon: Inbox,
               variant: 'default',
+              to: '/',
+            },
+            {
+              title: 'Graficas',
+              label: '',
+              icon: ChartAreaIcon,
+              variant: 'default',
+              to: 'charts',
             },
           ]}
         />

@@ -1,15 +1,12 @@
-'use client'
-
 import { ColumnDef } from '@tanstack/react-table'
 
 import { DataTableColumnHeader } from './data-table-column-header'
-import { DataTableRowActions } from './data-table-row-actions'
 import { Checkbox } from '@/shared/components/ui/checkbox'
-import { Task } from '../data/schema'
-import { labels, priorities, statuses } from '../data/data'
-import { Badge } from '@/shared/components/ui/badge'
+import { Cooperative } from '../data/schema'
+import { priorities } from '../data/data'
+import { DataTableRowActions } from './data-table-row-actions'
 
-export const columns: ColumnDef<Task>[] = [
+export const columns: ColumnDef<Cooperative>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -37,50 +34,51 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Task" />
+      <DataTableColumnHeader column={column} title="Id" />
     ),
     cell: ({ row }) => <div className="w-[80px]">{row.getValue('id')}</div>,
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: 'title',
+    accessorKey: 'currentBalance',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
+      <DataTableColumnHeader column={column} title="Saldo actual" />
     ),
     cell: ({ row }) => {
-      const label = labels.find(label => label.value === row.original.label)
+      const priority = priorities.find(priority =>
+        (row.getValue('currentBalance') as number) >= 0
+          ? priority.value === 'high'
+          : priority.value === 'low',
+      )
+
+      if (!priority) {
+        return null
+      }
 
       return (
         <div className="flex space-x-2">
-          {label && <Badge variant="outline">{label.label}</Badge>}
+          {priority.icon && (
+            <priority.icon
+              className={`mr-2 h-4 w-4 text-muted-foreground ${priority.value === 'low' ? 'text-red-500' : 'text-green-500'}`}
+            />
+          )}
           <span className="max-w-[500px] truncate font-medium">
-            {row.getValue('title')}
+            {row.getValue('currentBalance')}
           </span>
         </div>
       )
     },
   },
   {
-    accessorKey: 'status',
+    accessorKey: 'previousBalance',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Saldo anterior" />
     ),
     cell: ({ row }) => {
-      const status = statuses.find(
-        status => status.value === row.getValue('status'),
-      )
-
-      if (!status) {
-        return null
-      }
-
       return (
         <div className="flex w-[100px] items-center">
-          {status.icon && (
-            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <span>{status.label}</span>
+          <span>{row.getValue('previousBalance')}</span>
         </div>
       )
     },
@@ -89,25 +87,31 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    accessorKey: 'priority',
+    accessorKey: 'percentageVariation',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Priority" />
+      <DataTableColumnHeader column={column} title="Variacion porcentual" />
     ),
     cell: ({ row }) => {
-      const priority = priorities.find(
-        priority => priority.value === row.getValue('priority'),
-      )
-
-      if (!priority) {
-        return null
-      }
-
       return (
         <div className="flex items-center">
-          {priority.icon && (
-            <priority.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <span>{priority.label}</span>
+          <span>{row.getValue('percentageVariation')}</span>
+        </div>
+      )
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
+  },
+
+  {
+    accessorKey: 'description',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Descripcion" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center">
+          <span>{row.getValue('description')}</span>
         </div>
       )
     },

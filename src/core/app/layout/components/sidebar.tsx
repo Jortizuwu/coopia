@@ -1,5 +1,3 @@
-'use client'
-
 import { LucideIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -10,6 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/shared/components/ui/tooltip'
+import { Link } from 'react-router-dom'
 
 interface NavProps {
   isCollapsed: boolean
@@ -17,6 +16,7 @@ interface NavProps {
     title: string
     label?: string
     icon: LucideIcon
+    to: string
     variant: 'default' | 'ghost'
   }[]
 }
@@ -31,8 +31,8 @@ function SidebarComponent({ links, isCollapsed }: NavProps) {
           isCollapsed ? (
             <Tooltip key={index} delayDuration={0}>
               <TooltipTrigger asChild>
-                <a
-                  href="#"
+                <Link
+                  to={link.to}
                   className={cn(
                     buttonVariants({ variant: link.variant, size: 'icon' }),
                     'h-9 w-9',
@@ -41,7 +41,7 @@ function SidebarComponent({ links, isCollapsed }: NavProps) {
                   )}>
                   <link.icon className="h-4 w-4" />
                   <span className="sr-only">{link.title}</span>
-                </a>
+                </Link>
               </TooltipTrigger>
               <TooltipContent side="right" className="flex items-center gap-4">
                 {link.title}
@@ -53,9 +53,9 @@ function SidebarComponent({ links, isCollapsed }: NavProps) {
               </TooltipContent>
             </Tooltip>
           ) : (
-            <a
+            <Link
               key={index}
-              href="#"
+              to={link.to}
               className={cn(
                 buttonVariants({ variant: link.variant, size: 'sm' }),
                 link.variant === 'default' &&
@@ -74,7 +74,7 @@ function SidebarComponent({ links, isCollapsed }: NavProps) {
                   {link.label}
                 </span>
               )}
-            </a>
+            </Link>
           ),
         )}
       </nav>
