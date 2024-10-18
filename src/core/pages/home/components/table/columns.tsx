@@ -2,11 +2,11 @@ import { ColumnDef } from '@tanstack/react-table'
 
 import { DataTableColumnHeader } from './data-table-column-header'
 import { Checkbox } from '@/shared/components/ui/checkbox'
-import { Cooperative } from '../data/schema'
+import { Statistics } from '../data/schema'
 import { priorities } from '../data/data'
 import { DataTableRowActions } from './data-table-row-actions'
 
-export const columns: ColumnDef<Cooperative>[] = [
+export const columns: ColumnDef<Statistics>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -60,7 +60,7 @@ export const columns: ColumnDef<Cooperative>[] = [
         <div className="flex space-x-2">
           {priority.icon && (
             <priority.icon
-              className={`mr-2 h-4 w-4 text-muted-foreground ${priority.value === 'low' ? 'text-red-500' : 'text-green-500'}`}
+              className={`mr-2 h-4 w-4 text-muted-foreground ${priority.value === 'low' ? 'text-red-500' : 'text-green-600'}`}
             />
           )}
           <span className="max-w-[500px] truncate font-medium">

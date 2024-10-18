@@ -1,3 +1,5 @@
 export const QUERY_KEYS = {
-  COOPERATIVES: 'cooperatives',
+  CUT_OFF_DATES: 'cut-off-dates',
+  STATISTICS: 'statistics',
+  AGENCIES: 'agencies',
 }

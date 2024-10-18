@@ -17,7 +17,7 @@ import {
 import { Button } from '@/shared/components/ui/button'
 
 import { labels } from '../data/data'
-import { cooperativeSchema } from '../data/schema'
+import { statisticsSchema } from '../data/schema'
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -26,7 +26,7 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const coo = cooperativeSchema.parse(row.original)
+  const coo = statisticsSchema.parse(row.original)
 
   return (
     <DropdownMenu>

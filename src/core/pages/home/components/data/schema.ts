@@ -2,7 +2,7 @@ import { z } from "zod"
 
 // We're keeping a simple non-relational schema here.
 // IRL, you will have a schema for your data models.
-export const cooperativeSchema = z.object({
+export const statisticsSchema = z.object({
   id: z.string(),
   currentBalance: z.number(),
   previousBalance: z.number(),
@@ -10,4 +10,4 @@ export const cooperativeSchema = z.object({
   description: z.string(),
 })
 
-export type Cooperative = z.infer<typeof cooperativeSchema>
+export type Statistics = z.infer<typeof statisticsSchema>

@@ -1,3 +1,8 @@
+import { useForm, UseFormReturn } from 'react-hook-form'
+import { useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+
 import { Button } from '@/shared/components/ui/button'
 import {
   Select,
@@ -6,125 +11,191 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/components/ui/select'
-import { CalendarIcon, Search } from 'lucide-react'
+import { ChevronsUpDown, Search } from 'lucide-react'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/shared/components/ui/popover'
-import { format } from 'date-fns'
 import { cn } from '@/shared/lib/utils'
-import { Calendar } from '@/shared/components/ui/calendar'
-import { useState } from 'react'
 
-const types = [
-  {
-    id: 1,
-    label: 'CONS',
-    value: 'CONS',
-  },
-]
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+} from '@/shared/components/ui/form'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/shared/components/ui/command'
+import { Checkbox } from '@/shared/components/ui/checkbox'
+import { useListAgencies } from '@/shared/hooks/react-query/agencies'
+import { useListCutOfDates } from '@/shared/hooks/react-query/cut-off-dates'
 
 const actives = [
-  {
-    id: 1,
-    label: 'Activo',
-    value: 'true',
-  },
-  {
-    id: 2,
-    label: 'Inactivo',
-    value: 'false',
-  },
+  { id: 1, label: 'Activo', value: 'true' },
+  { id: 2, label: 'Inactivo', value: 'false' },
 ]
 
-type SearchProps = {
-  setSearchCooperativeDate: React.Dispatch<
-    React.SetStateAction<{
-      date: string
-      type: 'CONS'
-      active: boolean
-    }>
-  >
+interface SearchForm {
+  date: string
+  agencie: string
+  active: string
 }
 
-type Type = 'CONS'
+type SearchProps = {
+  setSearchStatisticsData: React.Dispatch<React.SetStateAction<SearchForm>>
+}
 
-function SearchComponent({ setSearchCooperativeDate }: SearchProps) {
-  const [date, setDate] = useState<Date>()
-  const [active, setActive] = useState('true')
-  const [type, setType] = useState<Type>('CONS')
+const FormSchema = z.object({
+  date: z.string({
+    required_error: 'date required',
+  }),
+  agencie: z.string({
+    required_error: 'type required',
+  }),
+  active: z.string({
+    required_error: 'active required',
+  }),
+})
 
-  const onClickSearch = () => {
-    setSearchCooperativeDate({
-      date: format(date!, 'yyyy-MM-dd'),
-      type,
-      active: active === 'true',
-    })
-  }
+type FormType = z.infer<typeof FormSchema>
+
+type From = UseFormReturn<FormType>
+
+const ComboboxComponent = ({
+  form,
+  data,
+  name,
+  label,
+}: {
+  form: From
+  data: string[]
+  name: 'date' | 'agencie' | 'active'
+  label: string
+}) => {
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState('')
 
   return (
-    <div className="flex flex-row gap-4 max-w-[500px]">
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant={'outline'}
-            className={cn(
-              'w-[280px] justify-start text-left font-normal',
-              !date && 'text-muted-foreground',
-            )}>
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {date ? (
-              format(date, 'PPP')
-            ) : (
-              <span className="text-white">fecha</span>
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            initialFocus
-          />
-        </PopoverContent>
-      </Popover>
-      <Select>
-        <SelectTrigger id="type">
-          <SelectValue placeholder="tipo" />
-        </SelectTrigger>
-        <SelectContent>
-          {types.map(type => (
-            <SelectItem
-              key={type.id}
-              value={type.value}
-              onChange={() => setType(type.value as Type)}>
-              {type.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <Select>
-        <SelectTrigger id="active">
-          <SelectValue placeholder="activo" />
-        </SelectTrigger>
-        <SelectContent>
-          {actives.map(type => (
-            <SelectItem
-              key={type.id}
-              value={type.value}
-              onChange={() => setActive(type.value)}>
-              {type.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <Button className="w-full" onClick={onClickSearch}>
-        <Search className="mr-2 h-4 w-4" />
-        buscar
-      </Button>
-    </div>
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="w-[200px] justify-between">
+                {value || `Seleccione una ${label}...`}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[250px] p-0">
+              <Command>
+                <CommandInput placeholder="Buscar..." />
+                <CommandList>
+                  <CommandEmpty>Sin {label} disponibles</CommandEmpty>
+                  <CommandGroup>
+                    {data.map(v => (
+                      <CommandItem
+                        key={v}
+                        value={v}
+                        onSelect={currentValue => {
+                          field.onChange(currentValue)
+                          setValue(currentValue === value ? '' : currentValue)
+                          setOpen(false)
+                        }}>
+                        <Checkbox
+                          className={cn(
+                            'mr-2 h-4 w-4',
+                            value === v ? 'opacity-100' : 'opacity-0',
+                          )}
+                        />
+                        {v}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </FormItem>
+      )}
+    />
+  )
+}
+
+function SearchComponent({ setSearchStatisticsData }: SearchProps) {
+  const { agencies, isLoading: isLoadingAgencies } = useListAgencies()
+  const { cutOfDates, isLoading: isLoadingCutOfDates } = useListCutOfDates()
+  const form = useForm<FormType>({
+    resolver: zodResolver(FormSchema),
+  })
+
+  const onSubmit = (data: FormType) => {
+    setSearchStatisticsData(data)
+  }
+
+  if (isLoadingAgencies || isLoadingCutOfDates) return <div>Cargando...</div>
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-row gap-4 max-w-[700px]">
+        <ComboboxComponent
+          form={form}
+          data={agencies || []}
+          name="agencie"
+          label="Agencia"
+        />
+        <ComboboxComponent
+          form={form}
+          data={cutOfDates || []}
+          name="date"
+          label="Fecha"
+        />
+
+        <FormField
+          control={form.control}
+          name="active"
+          render={({ field }) => (
+            <FormItem>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger id="active">
+                    <SelectValue placeholder="Estado" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {actives.map(active => (
+                    <SelectItem
+                      key={active.id}
+                      value={active.value}
+                      onSelect={() => field.onChange(active.value)}>
+                      {active.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormItem>
+          )}
+        />
+        <Button className="w-full" type="submit">
+          <Search className="mr-2 h-4 w-4" />
+          Buscar
+        </Button>
+      </form>
+    </Form>
   )
 }
 

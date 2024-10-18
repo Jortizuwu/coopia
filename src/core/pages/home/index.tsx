@@ -1,35 +1,39 @@
-import { useListCooperatives } from '@/shared/hooks/react-query/cooperatives'
+import { useListStatistics } from '@/shared/hooks/react-query/statistics'
 import DownloadComponent from './components/download'
 import MainHomeComponent from './components/main'
 import SearchComponent from './components/search'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 export default function HomePage() {
-  const [searchCooperativeDate, setSearchCooperativeDate] = useState<{
+  const [searchStatisticsData, setSearchstatisticsData] = useState<{
     date: string
-    type: 'CONS'
-    active: boolean
+    agencie: string
+    active: string
   }>({
     date: '2024-01-31',
-    type: 'CONS',
-    active: true,
+    agencie: 'CONS',
+    active: 'false',
   })
 
-  const { cooperatives, isLoading } = useListCooperatives(
-    searchCooperativeDate.date,
-    searchCooperativeDate.type,
-    searchCooperativeDate.active,
+  const { statistics, isLoading } = useListStatistics(
+    searchStatisticsData.date,
+    searchStatisticsData.agencie,
+    searchStatisticsData.active,
   )
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center w-full h-screen">
-        Loading...
-      </div>
-    )
-  }
+  const columns = useMemo(() => {
+    return statistics?.map(statistic => {
+      return {
+        ...statistic,
+        currentBalance: statistic.currentBalance ?? 0,
+        percentageVariation: statistic.percentageVariation ?? 0,
+        previousBalance: statistic.previousBalance ?? 0,
+        description: statistic.description ?? '',
+      }
+    })
+  }, [statistics])
 
-  if (!cooperatives) {
+  if (!statistics) {
     return <div>No data</div>
   }
 
@@ -37,8 +41,14 @@ export default function HomePage() {
     <section className="flex min-h-screen w-full flex-col">
       <section className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <DownloadComponent />
-        <SearchComponent setSearchCooperativeDate={setSearchCooperativeDate} />
-        <MainHomeComponent cooperatives={cooperatives} />
+        <SearchComponent setSearchStatisticsData={setSearchstatisticsData} />
+        {isLoading ? (
+          <div className="flex items-center justify-center w-full h-[50vh]">
+            Loading...
+          </div>
+        ) : (
+          <MainHomeComponent statistics={columns || []} />
+        )}
       </section>
     </section>
   )
