@@ -33,10 +33,6 @@ export default function HomePage() {
     })
   }, [statistics])
 
-  if (!statistics) {
-    return <div>No data</div>
-  }
-
   return (
     <section className="flex min-h-screen w-full flex-col">
       <section className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">

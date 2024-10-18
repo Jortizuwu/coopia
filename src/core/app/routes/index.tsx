@@ -5,6 +5,8 @@ const Layout = lazy(() => import('../layout'))
 const Home = lazy(() => import('../../pages/home'))
 const Charts = lazy(() => import('../../pages/charts'))
 
+import { LoginForm } from '@/core/pages/auth'
+
 /**
  * Renders the main application component.
  *
@@ -15,7 +17,7 @@ const App = () => {
     <BrowserRouter>
       <Suspense
         fallback={
-          <div className='h-screen w-full flex items-center justify-center'>
+          <div className="h-screen w-full flex items-center justify-center">
             <span>Loading ...</span>
           </div>
         }>
@@ -24,6 +26,7 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path="/charts" element={<Charts />} />
           </Route>
+          <Route path="/auth" element={<LoginForm />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
