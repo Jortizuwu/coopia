@@ -1,11 +1,11 @@
-import { tasks } from './data/tasks'
+import { IStatistics } from '@/shared/services/statistics/index.model'
 import { columns } from './table/columns'
 import { DataTable } from './table/data-table'
 
-function MainHomeComponent() {
+function MainHomeComponent({ statistics }: { statistics: IStatistics[] }) {
   return (
     <div className="w-full">
-      <DataTable data={tasks} columns={columns} />
+      <DataTable data={statistics} columns={columns} />
     </div>
   )
 }

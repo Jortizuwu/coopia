@@ -34,7 +34,6 @@ export function DataTableFacetedFilter<TData, TValue>({
           {title}
           {selectedValues?.size > 0 && (
             <>
-              {/* <Separator orientation="vertical" className="mx-2 h-4" /> */}
               <Badge
                 variant="secondary"
                 className="rounded-sm px-1 font-normal lg:hidden">

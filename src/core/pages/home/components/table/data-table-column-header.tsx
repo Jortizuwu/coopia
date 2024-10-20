@@ -7,7 +7,13 @@ import {
 import { Column } from '@tanstack/react-table'
 
 import { cn } from '@/lib/utils'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/shared/components/ui/dropdown-menu'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/shared/components/ui/dropdown-menu'
 import { Button } from '@/shared/components/ui/button'
 
 interface DataTableColumnHeaderProps<TData, TValue>

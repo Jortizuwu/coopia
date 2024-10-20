@@ -3,6 +3,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 const Layout = lazy(() => import('../layout'))
 const Home = lazy(() => import('../../pages/home'))
+const Charts = lazy(() => import('../../pages/charts'))
+
+import { LoginForm } from '@/core/pages/auth'
 
 /**
  * Renders the main application component.
@@ -12,15 +15,18 @@ const Home = lazy(() => import('../../pages/home'))
 const App = () => {
   return (
     <BrowserRouter>
-      <Suspense fallback={<span>Loading ...</span>}>
+      <Suspense
+        fallback={
+          <div className="h-screen w-full flex items-center justify-center">
+            <span>Loading ...</span>
+          </div>
+        }>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-
-            {/* <Route path="/test" element={<Test />} /> */}
-            {/* <Route path="/test/create" element={<CreateTest />} /> */}
+            <Route path="/charts" element={<Charts />} />
           </Route>
-          {/* <Route path='*' element={<PageNotFound />} /> */}
+          <Route path="/auth" element={<LoginForm />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
