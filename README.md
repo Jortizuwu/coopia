@@ -48,3 +48,15 @@ export default tseslint.config({
   },
 })
 ```
+
+create a docker image
+
+```bash
+  docker build --build-arg VITE_API_URL="http://localhost:8010/cooiap-dashboard/api/v1/cooperative" -t image_name .
+```
+
+run docker
+
+```bash
+  docker run -p 80:8080 image_name:latest
+```
