@@ -78,7 +78,7 @@ function MainComponent({
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-        <main className="flex flex-1 flex-col w-full">
+        <main className="flex h-screen flex-col w-full">
           <Outlet />
         </main>
       </ResizablePanel>

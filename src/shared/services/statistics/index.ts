@@ -2,11 +2,16 @@ import { api } from '@/shared/common/api'
 import { IStatistics } from './index.model'
 
 const statisticServices = {
-  listStatistics: async (date: string, type: string, status: string) => {
-    const req = await api.get<IStatistics[]>(
-      `/dashboard/${date}/${type}/${status}`,
-    )
-    const statistics = req.data
+  listStatistics: async (date: string, type: string) => {
+    const req = await Promise.all([
+      api.get<IStatistics[]>(`/dashboard/${date}/${type}/false`),
+      api.get<IStatistics[]>(`/dashboard/${date}/${type}/true`),
+    ])
+
+    const statistics = {
+      inactive: req[0].data,
+      active: req[1].data,
+    }
     return statistics
   },
 }

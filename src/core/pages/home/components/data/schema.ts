@@ -4,9 +4,9 @@ import { z } from "zod"
 // IRL, you will have a schema for your data models.
 export const statisticsSchema = z.object({
   id: z.string(),
-  currentBalance: z.number(),
-  previousBalance: z.number(),
-  percentageVariation: z.number(),
+  currentBalance: z.string(),
+  previousBalance: z.string(),
+  percentageVariation: z.string(),
   description: z.string(),
 })
 

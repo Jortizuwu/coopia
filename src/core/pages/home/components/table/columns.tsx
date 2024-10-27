@@ -47,7 +47,7 @@ export const columns: ColumnDef<Statistics>[] = [
     ),
     cell: ({ row }) => {
       const priority = priorities.find(priority =>
-        (row.getValue('currentBalance') as number) >= 0
+        !(row.getValue('currentBalance') as string).includes('-')
           ? priority.value === 'high'
           : priority.value === 'low',
       )
@@ -60,7 +60,7 @@ export const columns: ColumnDef<Statistics>[] = [
         <div className="flex space-x-2">
           {priority.icon && (
             <priority.icon
-              className={`mr-2 h-4 w-4 text-muted-foreground ${priority.value === 'low' ? 'text-red-500' : 'text-green-600'}`}
+              className={`mr-2 h-4 w-4 text-muted-foreground ${priority.value === 'low' ? 'text-red-500' : 'text-[#00FF9C]'}`}
             />
           )}
           <span className="max-w-[500px] truncate font-medium">

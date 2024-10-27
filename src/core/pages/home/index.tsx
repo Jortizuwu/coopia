@@ -3,6 +3,10 @@ import DownloadComponent from './components/download'
 import MainHomeComponent from './components/main'
 import SearchComponent from './components/search'
 import { useMemo, useState } from 'react'
+import {
+  formatAsPercentage,
+  formatNumberCOP,
+} from '@/shared/utils/format-number'
 
 export default function HomePage() {
   const [searchStatisticsData, setSearchstatisticsData] = useState<{
@@ -18,24 +22,39 @@ export default function HomePage() {
   const { statistics, isLoading } = useListStatistics(
     searchStatisticsData.date,
     searchStatisticsData.agencie,
-    searchStatisticsData.active,
   )
 
-  const columns = useMemo(() => {
-    return statistics?.map(statistic => {
+  const columnsActive = useMemo(() => {
+    return statistics?.active?.map(statistic => {
       return {
         ...statistic,
-        currentBalance: statistic.currentBalance ?? 0,
-        percentageVariation: statistic.percentageVariation ?? 0,
-        previousBalance: statistic.previousBalance ?? 0,
+        currentBalance: formatNumberCOP.format(statistic.currentBalance) ?? '0',
+        percentageVariation:
+          formatAsPercentage(statistic.percentageVariation) ?? '0',
+        previousBalance:
+          formatNumberCOP.format(statistic.previousBalance) ?? '0',
+        description: statistic.description ?? '',
+      }
+    })
+  }, [statistics])
+
+  const columnsInactive = useMemo(() => {
+    return statistics?.inactive?.map(statistic => {
+      return {
+        ...statistic,
+        currentBalance: formatNumberCOP.format(statistic.currentBalance) ?? '0',
+        percentageVariation:
+          formatAsPercentage(statistic.percentageVariation) ?? '0',
+        previousBalance:
+          formatNumberCOP.format(statistic.previousBalance) ?? '0',
         description: statistic.description ?? '',
       }
     })
   }, [statistics])
 
   return (
-    <section className="flex min-h-screen w-full flex-col">
-      <section className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+    <section className="flex h-full w-full flex-col">
+      <section className="flex h-full flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <DownloadComponent />
         <SearchComponent setSearchStatisticsData={setSearchstatisticsData} />
         {isLoading ? (
@@ -43,7 +62,16 @@ export default function HomePage() {
             Loading...
           </div>
         ) : (
-          <MainHomeComponent statistics={columns || []} />
+          <section>
+            <section>
+              <h2 className="mb-4 font-bold text-2xl">Activos</h2>
+              <MainHomeComponent statistics={columnsActive || []} />
+            </section>
+            <section>
+              <h2 className="mb-4 font-bold text-2xl">Pasivos</h2>
+              <MainHomeComponent statistics={columnsInactive || []} />
+            </section>
+          </section>
         )}
       </section>
     </section>
