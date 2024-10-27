@@ -8,6 +8,7 @@ import { ThemeProvider } from './shared/components/theme/theme-provider'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
 
 import QueryProvider from './shared/components/providers/react-query'
+import { Toaster } from './shared/components/ui/sonner'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root')!).render(
       <TooltipProvider>
         <QueryProvider>
           <App />
+          <Toaster />
         </QueryProvider>
       </TooltipProvider>
     </ThemeProvider>

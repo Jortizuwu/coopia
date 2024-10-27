@@ -1,12 +1,24 @@
 import { lazy, Suspense } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from 'react-router-dom'
+import usePersistedStore from '@/store'
 
 const Layout = lazy(() => import('../layout'))
 const Home = lazy(() => import('../../pages/home'))
 const Charts = lazy(() => import('../../pages/charts'))
-const HealthCheck  = lazy(() => import('../../pages/utilities'))
+const HealthCheck = lazy(() => import('../../pages/utilities'))
 
 import { LoginForm } from '@/core/pages/auth'
+
+const PrivateRoute = () => {
+  const { token } = usePersistedStore(state => state)
+  return token ? <Outlet /> : <Navigate to="/auth/login" />
+}
 
 /**
  * Renders the main application component.
@@ -23,18 +35,22 @@ const App = () => {
           </div>
         }>
         <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="/charts" element={<Charts />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="/charts" element={<Charts />} />
+            </Route>
+
+            {/* Ruta de Health Check */}
           </Route>
-          <Route path="/auth" element={<LoginForm />} />
-          
-          {/* Ruta de Health Check */}
           <Route path="/health" element={<HealthCheck />} />
+          <Route path="/auth">
+            <Route index path="login" element={<LoginForm />} />
+          </Route>
         </Routes>
       </Suspense>
     </BrowserRouter>
-  );
-};
+  )
+}
 
 export default App
