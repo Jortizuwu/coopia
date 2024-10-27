@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 const Layout = lazy(() => import('../layout'))
 const Home = lazy(() => import('../../pages/home'))
 const Charts = lazy(() => import('../../pages/charts'))
+const HealthCheck  = lazy(() => import('../../pages/utilities'))
 
 import { LoginForm } from '@/core/pages/auth'
 
@@ -27,10 +28,13 @@ const App = () => {
             <Route path="/charts" element={<Charts />} />
           </Route>
           <Route path="/auth" element={<LoginForm />} />
+          
+          {/* Ruta de Health Check */}
+          <Route path="/health" element={<HealthCheck />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
-  )
-}
+  );
+};
 
 export default App

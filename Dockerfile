@@ -23,7 +23,7 @@ RUN yarn build
 # Etapa de producción
 FROM nginx:alpine
 
-# Copiar el archivo de configuración de Nginx
+# Copiar el archivo de configuración de Nginxls
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copiar los archivos de compilación al servidor Nginx
