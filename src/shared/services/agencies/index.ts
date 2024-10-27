@@ -3,7 +3,7 @@ import { api } from '@/shared/common/api'
 const agenciesServices = {
   listAgencies: async () => {
     const req = await api.get<string[]>(
-      `/agencies`,
+      `/cooperative/agencies`,
     )
     const agencies = req.data
     return agencies

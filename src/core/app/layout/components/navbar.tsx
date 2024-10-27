@@ -13,7 +13,7 @@ import { Button } from '@/shared/components/ui/button'
 
 function NavbarComponent() {
   return (
-    <header className="fixed w-full top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+    <header className="fixed w-full z-50 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <a
           href="#"

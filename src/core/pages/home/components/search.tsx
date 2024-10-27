@@ -4,13 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
 import { Button } from '@/shared/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/components/ui/select'
+
 import { ChevronsUpDown, Search } from 'lucide-react'
 import {
   Popover,
@@ -19,12 +13,7 @@ import {
 } from '@/shared/components/ui/popover'
 import { cn } from '@/shared/lib/utils'
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-} from '@/shared/components/ui/form'
+import { Form, FormField, FormItem } from '@/shared/components/ui/form'
 import {
   Command,
   CommandEmpty,
@@ -37,15 +26,9 @@ import { Checkbox } from '@/shared/components/ui/checkbox'
 import { useListAgencies } from '@/shared/hooks/react-query/agencies'
 import { useListCutOfDates } from '@/shared/hooks/react-query/cut-off-dates'
 
-const actives = [
-  { id: 1, label: 'Activo', value: 'true' },
-  { id: 2, label: 'Inactivo', value: 'false' },
-]
-
 interface SearchForm {
   date: string
   agencie: string
-  active: string
 }
 
 type SearchProps = {
@@ -58,9 +41,6 @@ const FormSchema = z.object({
   }),
   agencie: z.string({
     required_error: 'type required',
-  }),
-  active: z.string({
-    required_error: 'active required',
   }),
 })
 
@@ -76,7 +56,7 @@ const ComboboxComponent = ({
 }: {
   form: From
   data: string[]
-  name: 'date' | 'agencie' | 'active'
+  name: 'date' | 'agencie'
   label: string
 }) => {
   const [open, setOpen] = useState(false)
@@ -94,12 +74,12 @@ const ComboboxComponent = ({
                 variant="outline"
                 role="combobox"
                 aria-expanded={open}
-                className="w-[200px] justify-between">
+                className="w-[300px] justify-between">
                 {value || `Seleccione una ${label}...`}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[250px] p-0">
+            <PopoverContent className="w-[350px] p-0">
               <Command>
                 <CommandInput placeholder="Buscar..." />
                 <CommandList>
@@ -165,31 +145,6 @@ function SearchComponent({ setSearchStatisticsData }: SearchProps) {
           label="Fecha"
         />
 
-        <FormField
-          control={form.control}
-          name="active"
-          render={({ field }) => (
-            <FormItem>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger id="active">
-                    <SelectValue placeholder="Estado" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {actives.map(active => (
-                    <SelectItem
-                      key={active.id}
-                      value={active.value}
-                      onSelect={() => field.onChange(active.value)}>
-                      {active.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
         <Button className="w-full" type="submit">
           <Search className="mr-2 h-4 w-4" />
           Buscar

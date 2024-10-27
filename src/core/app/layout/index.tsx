@@ -9,13 +9,11 @@ import Main from './components/main'
 
 function RootLayout() {
   return (
-    <div className="flex h-screen w-full flex-col">
+    <div className="flex w-full flex-col">
       <section className="mb-16">
         <NavbarComponent />
       </section>
-      <section className='h-screen overflow-hidden'>
-        <Main navCollapsedSize={4} />
-      </section>
+      <Main navCollapsedSize={4} />
     </div>
   )
 }

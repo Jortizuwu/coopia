@@ -31,16 +31,15 @@ export function useDefaultValues() {
     async ({ username, password }: FormType) => {
       try {
         const { status } = await authServices.login(username, password)
-        toast('Iniciando sesión', {
-          description: 'Iniciando sesión',
-          style: { background: '#6FCF97', color: '#fff' },
-        })
-
         setToken({
           status: status,
         })
         navigate('/', {
           replace: true,
+        })
+        toast('Iniciando sesión', {
+          description: 'Iniciando sesión',
+          style: { background: '#6FCF97', color: '#fff' },
         })
       } catch (error) {
         toast('Error al iniciar sesión', {

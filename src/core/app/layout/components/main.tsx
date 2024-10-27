@@ -1,7 +1,5 @@
 import { useState } from 'react'
 
-import { Inbox, ChartAreaIcon } from 'lucide-react'
-
 import { cn } from '@/lib/utils'
 import {
   ResizableHandle,
@@ -19,7 +17,7 @@ interface MailProps {
 }
 
 function MainComponent({
-  defaultLayout = [20, 80],
+  defaultLayout = [10, 90],
   defaultCollapsed = false,
   navCollapsedSize,
 }: MailProps) {
@@ -33,7 +31,7 @@ function MainComponent({
           sizes,
         )}`
       }}
-      className="max-h-[93vh] items-stretch">
+      className="h-screen items-stretch">
       <ResizablePanel
         defaultSize={defaultLayout[0]}
         collapsedSize={navCollapsedSize}
@@ -56,29 +54,11 @@ function MainComponent({
           isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out',
         )}>
         <Separator />
-        <SidebarComponent
-          isCollapsed={isCollapsed}
-          links={[
-            {
-              title: 'Inicio',
-              label: '',
-              icon: Inbox,
-              variant: 'default',
-              to: '/',
-            },
-            {
-              title: 'Graficas',
-              label: '',
-              icon: ChartAreaIcon,
-              variant: 'default',
-              to: 'charts',
-            },
-          ]}
-        />
+        <SidebarComponent isCollapsed={isCollapsed} />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-        <main className="flex h-screen flex-col w-full">
+        <main className="flex flex-col w-full">
           <Outlet />
         </main>
       </ResizablePanel>

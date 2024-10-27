@@ -4,8 +4,8 @@ import { IStatistics } from './index.model'
 const statisticServices = {
   listStatistics: async (date: string, type: string) => {
     const req = await Promise.all([
-      api.get<IStatistics[]>(`/dashboard/${date}/${type}/false`),
-      api.get<IStatistics[]>(`/dashboard/${date}/${type}/true`),
+      api.get<IStatistics[]>(`/cooperative/dashboard/${date}/${type}/false`),
+      api.get<IStatistics[]>(`/cooperative/dashboard/${date}/${type}/true`),
     ])
 
     const statistics = {
