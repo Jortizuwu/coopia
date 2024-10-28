@@ -12,11 +12,9 @@ export default function HomePage() {
   const [searchStatisticsData, setSearchstatisticsData] = useState<{
     date: string
     agencie: string
-    active: string
   }>({
     date: '2024-01-31',
     agencie: 'CONS',
-    active: 'false',
   })
 
   const { statistics, isLoading } = useListStatistics(
