@@ -7,8 +7,7 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu'
 import { Input } from '@/shared/components/ui/input'
-import { Sheet, SheetContent, SheetTrigger } from '@/shared/components/ui/sheet'
-import { CircleUser, Menu, Package2, Search } from 'lucide-react'
+import { CircleUser, Package2, Search } from 'lucide-react'
 import { Button } from '@/shared/components/ui/button'
 
 function NavbarComponent() {
@@ -27,27 +26,6 @@ function NavbarComponent() {
           Dashboard
         </a>
       </nav>
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="shrink-0 md:hidden">
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left">
-          <nav className="grid gap-6 text-lg font-medium">
-            <a
-              href="#"
-              className="flex items-center gap-2 text-lg font-semibold">
-              <Package2 className="h-6 w-6" />
-              <span className="sr-only">Acme Inc</span>
-            </a>
-            <a href="#" className="hover:text-foreground">
-              Dashboard
-            </a>
-          </nav>
-        </SheetContent>
-      </Sheet>
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <form className="ml-auto flex-1 sm:flex-initial">
           <div className="relative">

@@ -89,7 +89,7 @@ export function LoginForm() {
                             <FormItem>
                               <FormLabel>Nombre de usuario</FormLabel>
                               <FormControl>
-                                <Input placeholder="shadcn" {...field} />
+                                <Input placeholder="Nombre de usuario" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>

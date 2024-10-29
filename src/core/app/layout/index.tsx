@@ -1,5 +1,6 @@
 import NavbarComponent from './components/navbar'
-import Main from './components/main'
+import { Outlet } from 'react-router-dom'
+import SidebarComponent from './components/sidebar'
 
 /**
  * Renders the root layout of the application.
@@ -13,7 +14,14 @@ function RootLayout() {
       <section className="mb-16">
         <NavbarComponent />
       </section>
-      <Main navCollapsedSize={4} />
+      <section className="flex w-full">
+        <div>
+          <SidebarComponent />
+        </div>
+        <main className="flex flex-col w-full">
+          <Outlet />
+        </main>
+      </section>
     </div>
   )
 }
