@@ -9,7 +9,7 @@ const statisticServices = {
     ])
 
     const statistics = {
-      inactive: req[0].data,
+      passives: req[0].data,
       active: req[1].data,
     }
     return statistics

@@ -7,6 +7,7 @@ import {
   formatAsPercentage,
   formatNumberCOP,
 } from '@/shared/utils/format-number'
+import { BalanceChart } from './components/charts/balance'
 
 export default function HomePage() {
   const [searchStatisticsData, setSearchstatisticsData] = useState<{
@@ -37,7 +38,7 @@ export default function HomePage() {
   }, [statistics])
 
   const columnsInactive = useMemo(() => {
-    return statistics?.inactive?.map(statistic => {
+    return statistics?.passives?.map(statistic => {
       return {
         ...statistic,
         currentBalance: formatNumberCOP.format(statistic.currentBalance) ?? '0',
@@ -48,6 +49,19 @@ export default function HomePage() {
         description: statistic.description ?? '',
       }
     })
+  }, [statistics])
+
+  const totalBalance = useMemo(() => {
+    return {
+      actives: statistics?.active?.reduce(
+        (acc, curr) => acc + curr.currentBalance,
+        0,
+      ),
+      passives: statistics?.passives?.reduce(
+        (acc, curr) => acc + curr.currentBalance,
+        0,
+      ),
+    }
   }, [statistics])
 
   return (
@@ -68,6 +82,15 @@ export default function HomePage() {
             <section>
               <h2 className="mb-4 font-bold text-2xl">Pasivos</h2>
               <MainHomeComponent statistics={columnsInactive || []} />
+            </section>
+            <section className="mb-4 w-full">
+              <h2 className="font-bold text-2xl">Balance</h2>
+              <section className="grid grid-cols-2 mt-4 items-center gap-4 w-full">
+                <BalanceChart
+                  balance={totalBalance}
+                  date={searchStatisticsData.date}
+                />
+              </section>
             </section>
           </section>
         )}

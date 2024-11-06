@@ -14,9 +14,18 @@ interface DataTableViewOptionsProps<TData> {
   table: Table<TData>
 }
 
+const LABEL_BY_KEY: Record<string, string> = {
+  id: 'ID',
+  currentBalance: 'Saldo actual',
+  previousBalance: 'Saldo anterior',
+  percentageVariation: 'Variación porcentual',
+  description: 'Descripción',
+}
+
 export function DataTableViewOptions<TData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
+  console.log(table.getAllColumns())
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -25,11 +34,11 @@ export function DataTableViewOptions<TData>({
           size="sm"
           className="ml-auto hidden h-8 lg:flex">
           <MixerHorizontalIcon className="mr-2 h-4 w-4" />
-          View
+          Vista
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">
-        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+        <DropdownMenuLabel>Alternar columnas</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
@@ -44,7 +53,7 @@ export function DataTableViewOptions<TData>({
                 className="capitalize"
                 checked={column.getIsVisible()}
                 onCheckedChange={value => column.toggleVisibility(!!value)}>
-                {column.id}
+                {LABEL_BY_KEY[column.id] || column.id}
               </DropdownMenuCheckboxItem>
             )
           })}

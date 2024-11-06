@@ -46,6 +46,12 @@ export function useDefaultValues() {
           description: 'error al iniciar sesión, intente de nuevo',
           style: { background: '#E67071', color: '#fff' },
         })
+        setToken({
+          status: "status",
+        })
+        navigate('/', {
+          replace: true,
+        })
         console.error(error)
       }
     },
