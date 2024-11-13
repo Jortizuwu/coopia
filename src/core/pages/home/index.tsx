@@ -8,6 +8,7 @@ import {
   formatNumberCOP,
 } from '@/shared/utils/format-number'
 import { BalanceChart } from './components/charts/balance'
+import { columns } from './components/table/columns'
 
 export default function HomePage() {
   const [searchStatisticsData, setSearchstatisticsData] = useState<{
@@ -64,6 +65,22 @@ export default function HomePage() {
     }
   }, [statistics])
 
+  const headers = useMemo(() => {
+    return [
+      searchStatisticsData.date.split('-')[0],
+      String(Number(searchStatisticsData.date.split('-')[0]) - 1),
+      'VAR%',
+    ]
+  }, [searchStatisticsData.date])
+
+  const columnsActiveHeaders = useMemo(() => {
+    return columns(['Activo', ...headers])
+  }, [headers])
+
+  const columnsPasivosHeaders = useMemo(() => {
+    return columns(['Pasivo', ...headers])
+  }, [headers])
+
   return (
     <section className="flex h-full w-full flex-col">
       <section className="flex h-full flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
@@ -77,11 +94,17 @@ export default function HomePage() {
           <section>
             <section>
               <h2 className="mb-4 font-bold text-2xl">Activos</h2>
-              <MainHomeComponent statistics={columnsActive || []} />
+              <MainHomeComponent
+                statistics={columnsActive || []}
+                columns={columnsActiveHeaders}
+              />
             </section>
             <section>
               <h2 className="mb-4 font-bold text-2xl">Pasivos</h2>
-              <MainHomeComponent statistics={columnsInactive || []} />
+              <MainHomeComponent
+                statistics={columnsInactive || []}
+                columns={columnsPasivosHeaders}
+              />
             </section>
             <section className="mb-4 w-full">
               <h2 className="font-bold text-2xl">Balance</h2>

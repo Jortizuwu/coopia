@@ -1,5 +1,6 @@
-import { columns } from './table/columns'
+import { ColumnDef } from '@tanstack/react-table'
 import { DataTable } from './table/data-table'
+import { Statistics } from './data/schema'
 
 export interface IStatisticsColumns {
   id: string
@@ -11,7 +12,9 @@ export interface IStatisticsColumns {
 
 function MainHomeComponent({
   statistics,
+  columns,
 }: {
+  columns: ColumnDef<Statistics>[]
   statistics: IStatisticsColumns[]
 }) {
   return (

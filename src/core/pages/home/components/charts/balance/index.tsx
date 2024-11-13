@@ -32,6 +32,10 @@ const chartConfig = {
     label: 'Pasivos',
     color: 'hsl(var(--chart-2))',
   },
+  patrimonio: {
+    label: 'Patrimonio',
+    color: 'hsl(var(--chart-3))',
+  },
 } satisfies ChartConfig
 
 interface Props {
@@ -54,13 +58,23 @@ export function BalanceChart({ date, balance }: Props) {
       totales: balance.passives,
       fill: 'var(--color-passives)',
     },
+    {
+      balance: 'patrimonio',
+      totales:
+        balance.actives && balance.passives
+          ? balance.actives - balance.passives
+          : 0,
+      fill: 'var(--color-patrimonio)',
+    },
   ]
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Activo y pasivo</CardTitle>
-        <CardDescription>{date}</CardDescription>
+        <CardTitle>ACTIVOS, PASIVOS Y PATRIMONIO</CardTitle>
+        <CardDescription>
+          {date.split('-')[0] + ' - ' + String(Number(date.split('-')[0]) - 1)}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
