@@ -122,20 +122,23 @@ export default function HomePage() {
           </div>
         ) : (
           <section>
-            <section>
-              <h2 className="mb-4 font-bold text-2xl">Activos</h2>
-              <MainHomeComponent
-                statistics={columnsActive || []}
-                columns={columnsActiveHeaders}
-              />
-            </section>
-            <section>
-              <h2 className="mb-4 font-bold text-2xl">Pasivos</h2>
-              <MainHomeComponent
-                statistics={columnsInactive || []}
-                columns={columnsPasivosHeaders}
-              />
-            </section>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+              <section>
+                <h2 className="mb-4 font-bold text-2xl">Activos</h2>
+                <MainHomeComponent
+                  statistics={columnsActive || []}
+                  columns={columnsActiveHeaders}
+                />
+              </section>
+              <section>
+                <h2 className="mb-4 font-bold text-2xl">Pasivos</h2>
+                <MainHomeComponent
+                  statistics={columnsInactive || []}
+                  columns={columnsPasivosHeaders}
+                />
+              </section>
+            </div>
+
             <section>
               <h2 className="mb-4 font-bold text-2xl">Detalle</h2>
               <MainHomeComponent
@@ -154,7 +157,9 @@ export default function HomePage() {
                 </div>
               </section>
               <div>
-                <h2 className="font-bold text-2xl mt-5">ESTADOS DE RESULTADO</h2>
+                <h2 className="font-bold text-2xl mt-5">
+                  ESTADOS DE RESULTADO
+                </h2>
                 <DetailsChart
                   date={searchStatisticsData.date}
                   data={dataDetails || []}
