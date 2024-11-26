@@ -3,14 +3,16 @@ import { IStatistics } from './index.model'
 
 const statisticServices = {
   listStatistics: async (date: string, type: string) => {
-    const req = await Promise.all([
+    const res = await Promise.all([
       api.get<IStatistics[]>(`/cooperative/dashboard/${date}/${type}/false`),
       api.get<IStatistics[]>(`/cooperative/dashboard/${date}/${type}/true`),
+      api.get<IStatistics[]>(`/cooperative/dashboard/second/${date}/${type}`),
     ])
 
     const statistics = {
-      passives: req[0].data,
-      active: req[1].data,
+      passives: res[0].data,
+      active: res[1].data,
+      second: res[2].data,
     }
     return statistics
   },
