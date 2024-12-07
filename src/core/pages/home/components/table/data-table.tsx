@@ -28,6 +28,15 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
+const IS_BOLD_FONT = [
+  'INGRESO DE CARTERA',
+  'EXCEDENTE EN LA OPER FINANCIERA',
+  'GASTOS ADMINISTRATIVOS',
+  'EBITDA',
+  'EXCEDENTE OPERACIONAL',
+  'EXCEDENTE NETO',
+]
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -90,14 +99,22 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
+                  {row.getVisibleCells().map(cell => {
+                    return (
+                      <TableCell
+                        key={cell.id}
+                        className={
+                          IS_BOLD_FONT.includes(row.getValue('description'))
+                            ? 'font-bold bg-gray-200'
+                            : ''
+                        }>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    )
+                  })}
                 </TableRow>
               ))
             ) : (

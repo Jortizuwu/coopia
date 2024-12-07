@@ -18,7 +18,7 @@ export const columns = (titles: string[]): ColumnDef<Statistics>[] => {
       cell: ({ row }) => {
         return (
           <div className="flex items-center translate-x-[10px]">
-            <span>{row.getValue('description')}</span>
+            <span className='text-xs'>{row.getValue('description')}</span>
           </div>
         )
       },
@@ -27,13 +27,13 @@ export const columns = (titles: string[]): ColumnDef<Statistics>[] => {
       },
     },
     {
-      accessorKey: 'currentBalance',
+      accessorKey: 'previousBalance',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={'AÑO ' + titles[1]} />
       ),
       cell: ({ row }) => {
         const priority = priorities.find(priority =>
-          !(row.getValue('currentBalance') as string).includes('-')
+          !(row.getValue('previousBalance') as string).includes('-')
             ? priority.value === 'high'
             : priority.value === 'low',
         )
@@ -49,22 +49,22 @@ export const columns = (titles: string[]): ColumnDef<Statistics>[] => {
                 className={`mr-2 h-4 w-4 text-muted-foreground ${priority.value === 'low' ? 'text-red-500' : 'text-[#00FF9C]'}`}
               />
             )}
-            <span className="max-w-[500px] truncate font-medium">
-              {row.getValue('currentBalance')}
+            <span className="max-w-[500px] text-xs truncate">
+              {row.getValue('previousBalance')}
             </span>
           </div>
         )
       },
     },
     {
-      accessorKey: 'previousBalance',
+      accessorKey: 'currentBalance',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={'AÑO ' + titles[2]} />
       ),
       cell: ({ row }) => {
         return (
           <div className="flex w-[100px] items-center">
-            <span>{row.getValue('previousBalance')}</span>
+            <span className="text-xs">{row.getValue('currentBalance')}</span>
           </div>
         )
       },
@@ -80,7 +80,7 @@ export const columns = (titles: string[]): ColumnDef<Statistics>[] => {
       cell: ({ row }) => {
         return (
           <div className="flex items-center">
-            <span>{row.getValue('percentageVariation')}</span>
+            <span className='text-xs'>{row.getValue('percentageVariation')}</span>
           </div>
         )
       },

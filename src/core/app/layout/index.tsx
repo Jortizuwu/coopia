@@ -1,6 +1,6 @@
 import NavbarComponent from './components/navbar'
 import { Outlet } from 'react-router-dom'
-import SidebarComponent from './components/sidebar'
+// import SidebarComponent from './components/sidebar'
 
 /**
  * Renders the root layout of the application.
@@ -16,7 +16,7 @@ function RootLayout() {
       </section>
       <section className="flex w-full">
         <div>
-          <SidebarComponent />
+          {/* <SidebarComponent /> */}
         </div>
         <main className="flex flex-col w-full">
           <Outlet />

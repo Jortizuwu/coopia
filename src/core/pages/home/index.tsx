@@ -26,45 +26,54 @@ export default function HomePage() {
   )
 
   const columnsActive = useMemo(() => {
-    return statistics?.active?.map(statistic => {
-      return {
-        ...statistic,
-        currentBalance: formatNumberCOP.format(statistic.currentBalance) ?? '0',
-        percentageVariation:
-          formatAsPercentage(statistic.percentageVariation) ?? '0',
-        previousBalance:
-          formatNumberCOP.format(statistic.previousBalance) ?? '0',
-        description: statistic.description ?? '',
-      }
-    })
+    return statistics?.active
+      ?.map(statistic => {
+        return {
+          ...statistic,
+          currentBalance:
+            formatNumberCOP.format(statistic.currentBalance) ?? '0',
+          percentageVariation:
+            formatAsPercentage(statistic.percentageVariation) ?? '0',
+          previousBalance:
+            formatNumberCOP.format(statistic.previousBalance) ?? '0',
+          description: statistic.description ?? '',
+        }
+      })
+      .sort((a, b) => Number(a.id) - Number(b.id))
   }, [statistics])
 
   const columnsInactive = useMemo(() => {
-    return statistics?.passives?.map(statistic => {
-      return {
-        ...statistic,
-        currentBalance: formatNumberCOP.format(statistic.currentBalance) ?? '0',
-        percentageVariation:
-          formatAsPercentage(statistic.percentageVariation) ?? '0',
-        previousBalance:
-          formatNumberCOP.format(statistic.previousBalance) ?? '0',
-        description: statistic.description ?? '',
-      }
-    })
+    return statistics?.passives
+      ?.map(statistic => {
+        return {
+          ...statistic,
+          currentBalance:
+            formatNumberCOP.format(statistic.currentBalance) ?? '0',
+          percentageVariation:
+            formatAsPercentage(statistic.percentageVariation) ?? '0',
+          previousBalance:
+            formatNumberCOP.format(statistic.previousBalance) ?? '0',
+          description: statistic.description ?? '',
+        }
+      })
+      .sort((a, b) => Number(a.id) - Number(b.id))
   }, [statistics])
 
   const columnsSecond = useMemo(() => {
-    return statistics?.second?.map(statistic => {
-      return {
-        ...statistic,
-        currentBalance: formatNumberCOP.format(statistic.currentBalance) ?? '0',
-        percentageVariation:
-          formatAsPercentage(statistic.percentageVariation) ?? '0',
-        previousBalance:
-          formatNumberCOP.format(statistic.previousBalance) ?? '0',
-        description: statistic.description ?? '',
-      }
-    })
+    return statistics?.second
+      ?.map(statistic => {
+        return {
+          ...statistic,
+          currentBalance:
+            formatNumberCOP.format(statistic.currentBalance) ?? '0',
+          percentageVariation:
+            formatAsPercentage(statistic.percentageVariation) ?? '0',
+          previousBalance:
+            formatNumberCOP.format(statistic.previousBalance) ?? '0',
+          description: statistic.description ?? '',
+        }
+      })
+      .sort((a, b) => Number(a.id) - Number(b.id))
   }, [statistics])
 
   const totalBalance = useMemo(() => {
@@ -93,8 +102,8 @@ export default function HomePage() {
 
   const headers = useMemo(() => {
     return [
-      searchStatisticsData.date.split('-')[0],
       String(Number(searchStatisticsData.date.split('-')[0]) - 1),
+      searchStatisticsData.date.split('-')[0],
       'VAR%',
     ]
   }, [searchStatisticsData.date])
@@ -122,7 +131,7 @@ export default function HomePage() {
           </div>
         ) : (
           <section>
-            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <section>
                 <h2 className="mb-4 font-bold text-2xl">Activos</h2>
                 <MainHomeComponent
@@ -149,7 +158,7 @@ export default function HomePage() {
             <section className="mb-4 w-full">
               <section className="grid grid-cols-2 mt-4 items-center gap-4 w-full">
                 <div>
-                  <h2 className="font-bold text-2xl">Balance</h2>
+                  <h2 className="font-bold text-2xl mb-2">Balance</h2>
                   <BalanceChart
                     balance={totalBalance}
                     date={searchStatisticsData.date}
@@ -157,7 +166,7 @@ export default function HomePage() {
                 </div>
               </section>
               <div>
-                <h2 className="font-bold text-2xl mt-5">
+                <h2 className="font-bold text-2xl mt-5 mb-2">
                   ESTADOS DE RESULTADO
                 </h2>
                 <DetailsChart
