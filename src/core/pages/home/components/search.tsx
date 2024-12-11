@@ -29,6 +29,7 @@ import { useListCutOfDates } from '@/shared/hooks/react-query/cut-off-dates'
 interface SearchForm {
   date: string
   agencie: string
+  comparation: string
 }
 
 type SearchProps = {
@@ -40,6 +41,9 @@ const FormSchema = z.object({
     required_error: 'date required',
   }),
   agencie: z.string({
+    required_error: 'type required',
+  }),
+  comparation: z.string({
     required_error: 'type required',
   }),
 })
@@ -56,7 +60,7 @@ const ComboboxComponent = ({
 }: {
   form: From
   data: string[]
-  name: 'date' | 'agencie'
+  name: 'date' | 'agencie' | 'comparation'
   label: string
 }) => {
   const [open, setOpen] = useState(false)
@@ -117,6 +121,8 @@ const ComboboxComponent = ({
 function SearchComponent({ setSearchStatisticsData }: SearchProps) {
   const { agencies, isLoading: isLoadingAgencies } = useListAgencies()
   const { cutOfDates, isLoading: isLoadingCutOfDates } = useListCutOfDates()
+  const comparation = ['Año', 'Mes']
+
   const form = useForm<FormType>({
     resolver: zodResolver(FormSchema),
   })
@@ -143,6 +149,12 @@ function SearchComponent({ setSearchStatisticsData }: SearchProps) {
           data={cutOfDates || []}
           name="date"
           label="Fecha"
+        />
+        <ComboboxComponent
+          form={form}
+          data={comparation || []}
+          name="comparation"
+          label="comparacion"
         />
 
         <Button className="w-full" type="submit">

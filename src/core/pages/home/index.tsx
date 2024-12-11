@@ -9,20 +9,23 @@ import {
 } from '@/shared/utils/format-number'
 import { BalanceChart } from './components/charts/balance'
 import { columns } from './components/table/columns'
-import { DetailsChart } from './components/charts/details'
+// import { DetailsChart } from './components/charts/details'
 
 export default function HomePage() {
   const [searchStatisticsData, setSearchstatisticsData] = useState<{
     date: string
     agencie: string
+    comparation: string
   }>({
     date: '2024-01-31',
     agencie: 'CONS',
+    comparation: 'Mes',
   })
 
   const { statistics, isLoading } = useListStatistics(
     searchStatisticsData.date,
     searchStatisticsData.agencie,
+    searchStatisticsData.comparation,
   )
 
   const columnsActive = useMemo(() => {
@@ -89,16 +92,16 @@ export default function HomePage() {
     }
   }, [statistics])
 
-  const dataDetails = useMemo(() => {
-    return statistics?.second.map(statistic => {
-      return {
-        name: statistic.description,
-        initDate: statistic.previousBalance,
-        finishDate: statistic.currentBalance,
-        variation: statistic.percentageVariation,
-      }
-    })
-  }, [statistics])
+  // const dataDetails = useMemo(() => {
+  //   return statistics?.second.map(statistic => {
+  //     return {
+  //       name: statistic.description,
+  //       initDate: statistic.previousBalance,
+  //       finishDate: statistic.currentBalance,
+  //       variation: statistic.percentageVariation,
+  //     }
+  //   })
+  // }, [statistics])
 
   const headers = useMemo(() => {
     return [
@@ -131,7 +134,7 @@ export default function HomePage() {
           </div>
         ) : (
           <section>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
               <section>
                 <h2 className="mb-4 font-bold text-2xl">Activos</h2>
                 <MainHomeComponent
@@ -147,25 +150,24 @@ export default function HomePage() {
                 />
               </section>
             </div>
-
-            <section>
-              <h2 className="mb-4 font-bold text-2xl">Detalle</h2>
-              <MainHomeComponent
-                statistics={columnsSecond || []}
-                columns={columnsSecondHeaders}
-              />
-            </section>
             <section className="mb-4 w-full">
-              <section className="grid grid-cols-2 mt-4 items-center gap-4 w-full">
+              <section className="grid grid-cols-2 mt-4 items-start gap-4 w-full">
+                <section>
+                  <h2 className="mb-4 font-bold text-2xl">Detalle</h2>
+                  <MainHomeComponent
+                    statistics={columnsSecond || []}
+                    columns={columnsSecondHeaders}
+                  />
+                </section>
                 <div>
-                  <h2 className="font-bold text-2xl mb-2">Balance</h2>
+                  <h2 className="font-bold text-2xl mb-4">Balance</h2>
                   <BalanceChart
                     balance={totalBalance}
                     date={searchStatisticsData.date}
                   />
                 </div>
               </section>
-              <div>
+              {/* <div>
                 <h2 className="font-bold text-2xl mt-5 mb-2">
                   ESTADOS DE RESULTADO
                 </h2>
@@ -173,7 +175,7 @@ export default function HomePage() {
                   date={searchStatisticsData.date}
                   data={dataDetails || []}
                 />
-              </div>
+              </div> */}
             </section>
           </section>
         )}
