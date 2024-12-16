@@ -11,6 +11,21 @@ import { BalanceChart } from './components/charts/balance'
 import { columns } from './components/table/columns'
 // import { DetailsChart } from './components/charts/details'
 
+const Mounts = [
+  'Ene',
+  'Feb',
+  'Mar',
+  'Abr',
+  'May',
+  'Jun',
+  'Jul',
+  'Ago',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dic',
+]
+
 export default function HomePage() {
   const [searchStatisticsData, setSearchstatisticsData] = useState<{
     date: string
@@ -104,12 +119,28 @@ export default function HomePage() {
   // }, [statistics])
 
   const headers = useMemo(() => {
+    const [year, month] = searchStatisticsData.date.split('-').map(Number)
+
+    const previousMonth = Mounts[month - 1]
+    let currentMonth = Mounts[month]
+
+    if(currentMonth === undefined) {
+      currentMonth = "Ene"
+    }
+
+    const previousYear = year - 1
+
     return [
-      String(Number(searchStatisticsData.date.split('-')[0]) - 1),
-      searchStatisticsData.date.split('-')[0],
+      searchStatisticsData.comparation === 'Mes'
+        ? `${previousMonth} - ${previousYear}`
+        : `${previousMonth} - ${previousYear}`,
+      searchStatisticsData.comparation === 'Mes'
+        ? `${currentMonth} - ${previousYear}`
+        : `${currentMonth} - ${year}`,
+
       'VAR%',
     ]
-  }, [searchStatisticsData.date])
+  }, [searchStatisticsData])
 
   const columnsActiveHeaders = useMemo(() => {
     return columns(['Activo', ...headers])

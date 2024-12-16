@@ -29,7 +29,7 @@ export const columns = (titles: string[]): ColumnDef<Statistics>[] => {
     {
       accessorKey: 'previousBalance',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={'AÑO ' + titles[1]} />
+        <DataTableColumnHeader column={column} title={'' + titles[1]} />
       ),
       cell: ({ row }) => {
         const priority = priorities.find(priority =>
@@ -59,7 +59,7 @@ export const columns = (titles: string[]): ColumnDef<Statistics>[] => {
     {
       accessorKey: 'currentBalance',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={'AÑO ' + titles[2]} />
+        <DataTableColumnHeader column={column} title={'' + titles[2]} />
       ),
       cell: ({ row }) => {
         return (
