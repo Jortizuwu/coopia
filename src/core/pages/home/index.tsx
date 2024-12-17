@@ -122,20 +122,25 @@ export default function HomePage() {
     const [year, month] = searchStatisticsData.date.split('-').map(Number)
 
     const previousMonth = Mounts[month - 1]
-    let currentMonth = Mounts[month]
+    let currentMonth =
+      searchStatisticsData.comparation === 'Mes'
+        ? Mounts[month]
+        : Mounts[month - 1]
 
-    if(currentMonth === undefined) {
-      currentMonth = "Ene"
+    if (currentMonth === undefined) {
+      currentMonth = 'Ene'
     }
 
     const previousYear = year - 1
+
+    console.log({currentMonth})
 
     return [
       searchStatisticsData.comparation === 'Mes'
         ? `${previousMonth} - ${previousYear}`
         : `${previousMonth} - ${previousYear}`,
-      searchStatisticsData.comparation === 'Mes'
-        ? `${currentMonth} - ${previousYear}`
+      searchStatisticsData.comparation === 'Mes' 
+        ? `${currentMonth} - ${currentMonth === "Ene" ? previousYear + 1 : previousYear}`
         : `${currentMonth} - ${year}`,
 
       'VAR%',
